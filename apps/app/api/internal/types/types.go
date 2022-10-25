@@ -19,7 +19,7 @@ type RegisterRequest struct {
 
 type CommonResp struct {
 	Msg  string `json:"msg"`
-	Code string `json:"code"`
+	Code int32  `json:"code"`
 }
 
 type LoginRequest struct {
@@ -28,10 +28,11 @@ type LoginRequest struct {
 }
 
 type LoginResponse struct {
-	Code     string `json:"code"`
-	Msg      string `json:"msg"`
-	Token    string `json:"token"`
-	UserName string `json:"username"`
+	Code         int32  `json:"code"`
+	Msg          string `json:"msg"`
+	Token        string `json:"token"`
+	UserName     string `json:"username"`
+	AccessExpire int64  `json:"accessExpire"`
 }
 
 type AdminLoginReq struct {
@@ -40,8 +41,9 @@ type AdminLoginReq struct {
 }
 
 type AdminLoginResponse struct {
-	Code       string `json:"code"`
-	Msg        string `json:"msg"`
-	AdminToken string `json:"admin_token"`
-	UserName   string `json:"user_name"`
+	Code         int32  `json:"code"`
+	Msg          string `json:"msg"`
+	AdminToken   string `json:"admin_token"`
+	UserName     string `json:"user_name"`
+	AccessExpire int64  `json:"accessExpire"`
 }

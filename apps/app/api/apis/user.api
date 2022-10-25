@@ -19,7 +19,7 @@ type (
 
     CommonResp {
         Msg string `json:"msg"`
-        Code string `json:"code"`
+        Code int32 `json:"code"`
     }
 
     LoginRequest {
@@ -28,21 +28,23 @@ type (
     }
 
     LoginResponse {
-        Code string `json:"code"`
+        Code int32 `json:"code"`
         Msg string `json:"msg"`
         Token string `json:"token"`
         UserName string `json:"username"`
+        AccessExpire int64 `json:"accessExpire"`
     }
 
-    AdminLoginReq{
+    AdminLoginReq {
         UserName string `form:"username"`
         Password string `form:"password"`
     }
 
-    AdminLoginResponse{
-        Code string `json:"code"`
+    AdminLoginResponse {
+        Code int32 `json:"code"`
         Msg string `json:"msg"`
         AdminToken string `json:"admin_token"`
         UserName string `json:"user_name"`
+        AccessExpire int64 `json:"accessExpire"`
     }
 )

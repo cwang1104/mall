@@ -1,3 +1,13 @@
 Name: api-api
 Host: 0.0.0.0
 Port: 8888
+
+JwtAuth:
+  AccessSecret: jwt-mall-go-zero-test
+  AccessExpire: 86400
+UserRpc:
+  Etcd:
+    Hosts:
+      - 192.168.43.128:2379
+    Key: user.rpc
+  NonBlock: true

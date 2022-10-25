@@ -2,6 +2,10 @@ package user
 
 import (
 	"context"
+	"github.com/pkg/errors"
+	"mall/apps/user/user/user"
+	"mall/pkg/jwtx"
+	"time"
 
 	"mall/apps/app/api/internal/svc"
 	"mall/apps/app/api/internal/types"
@@ -24,7 +28,26 @@ func NewLoginHandleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Login
 }
 
 func (l *LoginHandleLogic) LoginHandle(req *types.LoginRequest) (resp *types.LoginResponse, err error) {
-	// todo: add your logic here and delete this line
+	var loginReq user.UserRequest
+	loginReq.Email = req.Email
+	loginReq.Password = req.Password
 
+	res, err := l.svcCtx.UserRpc.UserLogin(l.ctx, &loginReq)
+	if err != nil {
+		return nil, errors.Wrapf(err, "req:%+v", req)
+	}
+
+	//生成jwt token
+	now := time.Now().Unix()
+	accessExpire := l.svcCtx.Config.JwtAuth.AccessExpire
+	accessToken, err := jwtx.GetToken(l.svcCtx.Config.JwtAuth.AccessSecret, now, accessExpire, res.Email)
+	if err != nil {
+		return nil, err
+	}
+	resp.Msg = res.Msg
+	resp.Code = res.Code
+	resp.UserName = res.Email
+	resp.Token = accessToken
+	resp.AccessExpire = now + accessExpire
 	return
 }
