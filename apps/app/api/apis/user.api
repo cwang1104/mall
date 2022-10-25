@@ -1,0 +1,48 @@
+syntax = "v1"
+
+info(
+    title: "用户管理"
+    desc: "用户管理"
+    author: "cwang"
+    email: "type email here"
+    version: "v1"
+)
+
+type (
+    // 注册相关参数
+    RegisterRequest {
+        Email string `form:"email"`
+        Catpche string `form:"catpche"`
+        Password string `form:"password"`
+        Repassword string `form:"repassword"`
+    }
+
+    CommonResp {
+        Msg string `json:"msg"`
+        Code string `json:"code"`
+    }
+
+    LoginRequest {
+        Email string `form:"email"`
+        Password string `form:"password"`
+    }
+
+    LoginResponse {
+        Code string `json:"code"`
+        Msg string `json:"msg"`
+        Token string `json:"token"`
+        UserName string `json:"username"`
+    }
+
+    AdminLoginReq{
+        UserName string `form:"username"`
+        Password string `form:"password"`
+    }
+
+    AdminLoginResponse{
+        Code string `json:"code"`
+        Msg string `json:"msg"`
+        AdminToken string `json:"admin_token"`
+        UserName string `json:"user_name"`
+    }
+)

@@ -1,0 +1,41 @@
+syntax = "v1"
+
+import (
+	"apis/user.api"
+)
+
+type (
+
+	//发送邮件参数
+
+	SendEmailRequest {
+		Email string `json:"email"`
+	}
+	SendEmailResponse {
+		Code string `json:"code"`
+		Msg  string `json:"msg"`
+	}
+)
+
+@server(
+	prefix: user
+	group: user
+)
+
+service api-api{
+	@doc "用户注册"
+	@handler RegisterHandle
+	post /user_register (RegisterRequest) returns (CommonResp)
+	
+	@doc "用户登录"
+	@handler LoginHandle
+	post /front_user_login (LoginRequest) returns (LoginResponse)
+	
+	@doc "发送邮件验证码"
+	@handler SendEmailHandler
+	post /send_email (SendEmailRequest) returns (SendEmailResponse)
+	
+	@doc "后台管理用户登录"
+	@handler AdminLogin
+	post /admin_login (AdminLoginReq) returns (AdminLoginResponse)
+}
