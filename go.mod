@@ -3,7 +3,9 @@ module mall
 go 1.19
 
 require (
+	github.com/astaxie/beego v1.12.3
 	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/zeromicro/go-zero v1.4.2
 	google.golang.org/grpc v1.50.1

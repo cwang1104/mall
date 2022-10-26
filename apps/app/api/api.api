@@ -12,7 +12,7 @@ type (
 		Email string `json:"email"`
 	}
 	SendEmailResponse {
-		Code string `json:"code"`
+		Code int32  `json:"code"`
 		Msg  string `json:"msg"`
 	}
 )
@@ -38,4 +38,16 @@ service api-api{
 	@doc "后台管理用户登录"
 	@handler AdminLogin
 	post /admin_login (AdminLoginReq) returns (AdminLoginResponse)
+}
+
+@server(
+	prefix: user
+	group: user
+	jwt: JwtAuth
+)
+
+service api-api{
+	@doc "获取用户列表"
+	@handler getUserList
+	get /get_front_users (GetUserListReq) returns(GetUserListResponse)
 }

@@ -8,6 +8,6 @@ JwtAuth:
 UserRpc:
   Etcd:
     Hosts:
-      - 192.168.43.128:2379
+      - 127.0.0.1:2379
     Key: user.rpc
   NonBlock: true

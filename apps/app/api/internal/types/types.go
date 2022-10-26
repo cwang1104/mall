@@ -6,7 +6,7 @@ type SendEmailRequest struct {
 }
 
 type SendEmailResponse struct {
-	Code string `json:"code"`
+	Code int32  `json:"code"`
 	Msg  string `json:"msg"`
 }
 
@@ -46,4 +46,17 @@ type AdminLoginResponse struct {
 	AdminToken   string `json:"admin_token"`
 	UserName     string `json:"user_name"`
 	AccessExpire int64  `json:"accessExpire"`
+}
+
+type GetUserListReq struct {
+	CurrentPage int32 `form:"currentPage,default=1"`
+	PageSize    int32 `form:"pageSize,default=10"`
+}
+
+type GetUserListResponse struct {
+	Code        int32  `json:"code"`
+	Msg         string `json:"msg"`
+	Total       int32  `json:"total"`
+	CurrentPage int32  `json:"current_page"`
+	PageSize    int32  `json:"page_size"`
 }
