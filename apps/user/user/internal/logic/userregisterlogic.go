@@ -2,9 +2,10 @@ package logic
 
 import (
 	"context"
-
+	"mall/apps/user/model"
 	"mall/apps/user/user/internal/svc"
 	"mall/apps/user/user/user"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -25,6 +26,43 @@ func NewUserRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *User
 
 func (l *UserRegisterLogic) UserRegister(in *user.UserRequest) (*user.UserResponse, error) {
 	// todo: add your logic here and delete this line
+	emailCode, isOk := emailCache.Get(in.Email)
+	if !isOk {
+		return &user.UserResponse{
+			Code: 500,
+			Msg:  "注册失败，请重新尝试",
+		}, nil
+	} else {
+		if emailCode.(string) != in.Code {
+			return &user.UserResponse{
+				Code: 500,
+				Msg:  "验证码不正确",
+			}, nil
+		} else {
+			userInfo, _ := l.svcCtx.UserModel.FindOneByEmail(l.ctx, in.Email)
+			if userInfo != nil {
+				return &user.UserResponse{
+					Code: 500,
+					Msg:  "用户已存在",
+				}, nil
+			}
+			addUser := model.User{
+				Email:      in.Email,
+				Password:   in.Password,
+				Status:     1,
+				Desc:       "测试用户",
+				CreateTime: time.Now(),
+			}
 
-	return &user.UserResponse{}, nil
+			_, err := l.svcCtx.UserModel.Insert(l.ctx, &addUser)
+			var res *user.UserResponse
+			if err != nil {
+				res.Code = 500
+				res.Msg = "注册失败，请重试"
+			}
+			res.Code = 200
+			res.Msg = "注册成功"
+			return res, nil
+		}
+	}
 }

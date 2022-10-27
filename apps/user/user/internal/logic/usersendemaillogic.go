@@ -2,7 +2,6 @@ package logic
 
 import (
 	"context"
-	"fmt"
 	"mall/pkg/utils"
 	"time"
 
@@ -19,7 +18,7 @@ type UserSendEmailLogic struct {
 	logx.Logger
 }
 
-var c = cache.New(60*time.Second, 20*time.Second)
+var emailCache = cache.New(60*time.Second, 20*time.Second)
 
 func NewUserSendEmailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserSendEmailLogic {
 	return &UserSendEmailLogic{
@@ -40,8 +39,8 @@ func (l *UserSendEmailLogic) UserSendEmail(in *user.UserMailRequest) (*user.User
 		}, nil
 	}
 
-	c.Set(in.Email, randNum, cache.DefaultExpiration)
-	fmt.Println("---------------", randNum)
+	emailCache.Set(in.Email, randNum, cache.DefaultExpiration)
+
 	return &user.UserResponse{
 		Code: 200,
 		Msg:  "邮件发送成功",
