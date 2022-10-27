@@ -9,7 +9,7 @@ type (
 	//发送邮件参数
 
 	SendEmailRequest {
-		Email string `json:"email"`
+		Email string `form:"email"`
 	}
 	SendEmailResponse {
 		Code int32  `json:"code"`

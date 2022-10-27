@@ -2,7 +2,7 @@
 package types
 
 type SendEmailRequest struct {
-	Email string `json:"email"`
+	Email string `form:"email"`
 }
 
 type SendEmailResponse struct {
@@ -12,7 +12,7 @@ type SendEmailResponse struct {
 
 type RegisterRequest struct {
 	Email      string `form:"email"`
-	Catpche    string `form:"catpche"`
+	Captche    string `form:"catpche"`
 	Password   string `form:"password"`
 	Repassword string `form:"repassword"`
 }

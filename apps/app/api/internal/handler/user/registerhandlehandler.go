@@ -1,6 +1,7 @@
 package user
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -19,6 +20,8 @@ func RegisterHandleHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := user.NewRegisterHandleLogic(r.Context(), svcCtx)
 		resp, err := l.RegisterHandle(&req)
+		log.Printf("\n\n----------33333,%v\n\n", resp)
+		log.Println("----------33333,", err)
 		if err != nil {
 			httpx.Error(w, err)
 		} else {

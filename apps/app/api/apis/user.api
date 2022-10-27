@@ -12,7 +12,7 @@ type (
     // 注册相关参数
     RegisterRequest {
         Email string `form:"email"`
-        Catpche string `form:"catpche"`
+        captche string `form:"catpche"`
         Password string `form:"password"`
         Repassword string `form:"repassword"`
     }

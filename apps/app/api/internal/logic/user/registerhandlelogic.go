@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"log"
 	"mall/apps/user/user/user"
 	"mall/pkg/utils"
 
@@ -27,17 +28,18 @@ func NewRegisterHandleLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Re
 
 func (l *RegisterHandleLogic) RegisterHandle(req *types.RegisterRequest) (resp *types.CommonResp, err error) {
 	isOK := utils.VerifyEmail(req.Email)
-
+	var response types.CommonResp
 	if !isOK {
-		resp.Code = 500
-		resp.Msg = "邮箱格式不正确"
-		return
+		response.Code = 500
+		response.Msg = "邮箱格式不正确"
+		logx.Errorf("邮箱格式不正确,err:%v", req.Email)
+		return &response, nil
 	}
-
 	if req.Password != req.Repassword {
-		resp.Code = 500
-		resp.Msg = "两次输入密码不一致"
-		return
+		response.Code = 500
+		response.Msg = "两次输入密码不一致"
+		log.Println("密码输入错误")
+		return &response, nil
 	}
 	pbData := user.UserRequest{
 		Email:      req.Email,
@@ -47,12 +49,13 @@ func (l *RegisterHandleLogic) RegisterHandle(req *types.RegisterRequest) (resp *
 	}
 	res, err := l.svcCtx.UserRpc.UserRegister(l.ctx, &pbData)
 	if err != nil {
-		resp.Code = 500
-		resp.Msg = "注册失败，请重试"
-		return resp, err
+		response.Code = 500
+		response.Msg = "注册失败，请重试"
+		log.Println("注册失败，err", err)
+		return &response, err
 	}
-	resp.Code = res.Code
-	resp.Msg = res.Msg
+	response.Code = res.Code
+	response.Msg = res.Msg
 
-	return
+	return &response, nil
 }

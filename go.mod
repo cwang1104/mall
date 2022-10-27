@@ -9,6 +9,7 @@ require (
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pkg/errors v0.9.1
 	github.com/zeromicro/go-zero v1.4.2
+	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d
 	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
 )

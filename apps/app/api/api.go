@@ -18,9 +18,10 @@ var configFile = flag.String("f", "etc/api-api.yaml", "the config file")
 func main() {
 	flag.Parse()
 	logx.DisableStat()
+
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
-	fmt.Printf("--------------------%+v", c)
+
 	server := rest.MustNewServer(c.RestConf)
 	defer server.Stop()
 
