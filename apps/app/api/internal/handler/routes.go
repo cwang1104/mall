@@ -4,6 +4,8 @@ package handler
 import (
 	"net/http"
 
+	product "mall/apps/app/api/internal/handler/product"
+	seckill "mall/apps/app/api/internal/handler/seckill"
 	user "mall/apps/app/api/internal/handler/user"
 	"mall/apps/app/api/internal/svc"
 
@@ -47,5 +49,39 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		},
 		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
 		rest.WithPrefix("/user"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/product_add",
+				Handler: product.ProductAddHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/get_product_list",
+				Handler: product.GetProductListHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
+		rest.WithPrefix("/product"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/front/seckill",
+				Handler: seckill.SeckillHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/front/get_seckill_result",
+				Handler: seckill.GetSeckillResHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.JwtAuth.AccessSecret),
+		rest.WithPrefix("/seckill"),
 	)
 }

@@ -1,0 +1,49 @@
+syntax = "v1"
+
+import "apis/common.api"
+
+info(
+    title: "商品相关api"
+    desc: "商品"
+    author: "cwang1104"
+    email: "type email here"
+    version: "type version here"
+)
+
+type (
+
+    GetProductListReq {
+        CurrentPage string `form:"currentPage,default=1"`
+        PageSize string `form:"pageSize,default=10"`
+    }
+
+    GetProductListResp {
+        CommonResp
+        Products []Product `json:"products"`
+        Total int32 `json:"total"`
+        CurrentPage int32 `json:"current_page"`
+        PageSize int32 `json:"page_size"`
+    }
+
+    ProductAddReq {
+        Name string `form:"name"`
+        Price string `form:"price"`
+        Num string `form:"num"`
+        Uint string `form:"uint"`
+        Desc string `form:"desc"`
+    }
+
+
+
+    Product {
+        Id int32 `json:"id"`
+        Name string `json:"name"`
+        Price float32 `json:"price"`
+        Num int32 `json:"num"`
+        Uint string `json:"uint"`
+        Picture string `json:"picture"`
+        Desc string `json:"desc"`
+        CreateTime string `json:"create_time"`
+    }
+)
+

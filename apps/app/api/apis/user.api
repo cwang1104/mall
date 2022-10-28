@@ -1,5 +1,4 @@
 syntax = "v1"
-
 info(
     title: "用户管理"
     desc: "用户管理"
@@ -17,10 +16,6 @@ type (
         Repassword string `form:"repassword"`
     }
 
-    CommonResp {
-        Msg string `json:"msg"`
-        Code int32 `json:"code"`
-    }
 
     LoginRequest {
         Email string `form:"email"`

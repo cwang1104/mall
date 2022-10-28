@@ -17,7 +17,7 @@ var configFile = flag.String("f", "etc/api-api.yaml", "the config file")
 
 func main() {
 	flag.Parse()
-	//logx.DisableStat()
+	logx.DisableStat()
 	logx.MustSetup(logx.LogConf{
 		Encoding: "plain",
 	})

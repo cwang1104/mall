@@ -2,6 +2,9 @@ syntax = "v1"
 
 import (
 	"apis/user.api"
+	"apis/seckill.api"
+	"apis/common.api"
+	"apis/product.api"
 )
 
 type (
@@ -22,7 +25,7 @@ type (
 	group: user
 )
 
-service api-api{
+service api-api {
 	@doc "用户注册"
 	@handler RegisterHandle
 	post /user_register (RegisterRequest) returns (CommonResp)
@@ -46,8 +49,38 @@ service api-api{
 	jwt: JwtAuth
 )
 
-service api-api{
+service api-api {
 	@doc "获取用户列表"
 	@handler getUserList
-	get /get_front_users (GetUserListReq) returns(GetUserListResponse)
+	get /get_front_users (GetUserListReq) returns (GetUserListResponse)
+}
+
+@server(
+	prefix: product
+	group: product
+	jwt: JwtAuth
+)
+service api-api {
+	@doc "添加商品"
+	@handler productAdd
+	post /product_add (ProductAddReq) returns (CommonResp)
+	
+	@doc "获取商品列表"
+	@handler getProductList
+	get /get_product_list (GetProductListReq) returns (GetProductListResp)
+}
+
+@server(
+	prefix: seckill
+	group: seckill
+	jwt: JwtAuth
+)
+service api-api {
+	@doc "秒杀入口"
+	@handler seckill
+	post /front/seckill (SeckillReq) returns (CommonResp)
+	
+	@doc "获取秒杀结果"
+	@handler getSeckillRes
+	get /front/get_seckill_result returns (CommonResp)
 }

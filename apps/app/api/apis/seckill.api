@@ -1,0 +1,13 @@
+syntax = "v1"
+
+info(
+    title: "秒杀接口"
+)
+
+type (
+    SeckillReq{
+        Id string `form:"id"`
+    }
+
+
+)

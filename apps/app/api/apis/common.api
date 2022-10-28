@@ -1,0 +1,17 @@
+syntax = "v1"
+
+info(
+    title: "通用"
+)
+
+type (
+    CommonReq {
+        CurrentPage string `json:"currentPage" form:"currentPage"`
+        PageSize string `json:"pageSize" form:"pageSize"`
+    }
+
+    CommonResp {
+        Code int32 `json:"code"`
+        Msg string `json:"msg"`
+    }
+)

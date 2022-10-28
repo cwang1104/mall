@@ -17,11 +17,6 @@ type RegisterRequest struct {
 	Repassword string `form:"repassword"`
 }
 
-type CommonResp struct {
-	Msg  string `json:"msg"`
-	Code int32  `json:"code"`
-}
-
 type LoginRequest struct {
 	Email    string `form:"email"`
 	Password string `form:"password"`
@@ -67,4 +62,50 @@ type User struct {
 	Desc        string `json:"desc"`
 	Status      string `json:"status"`
 	CreatedTime string `json:"created_time"`
+}
+
+type SeckillReq struct {
+	Id string `form:"id"`
+}
+
+type CommonReq struct {
+	CurrentPage string `json:"currentPage" form:"currentPage"`
+	PageSize    string `json:"pageSize" form:"pageSize"`
+}
+
+type CommonResp struct {
+	Code int32  `json:"code"`
+	Msg  string `json:"msg"`
+}
+
+type GetProductListReq struct {
+	CurrentPage string `form:"currentPage,default=1"`
+	PageSize    string `form:"pageSize,default=10"`
+}
+
+type GetProductListResp struct {
+	CommonResp
+	Products    []Product `json:"products"`
+	Total       int32     `json:"total"`
+	CurrentPage int32     `json:"current_page"`
+	PageSize    int32     `json:"page_size"`
+}
+
+type ProductAddReq struct {
+	Name  string `form:"name"`
+	Price string `form:"price"`
+	Num   string `form:"num"`
+	Uint  string `form:"uint"`
+	Desc  string `form:"desc"`
+}
+
+type Product struct {
+	Id         int32   `json:"id"`
+	Name       string  `json:"name"`
+	Price      float32 `json:"price"`
+	Num        int32   `json:"num"`
+	Uint       string  `json:"uint"`
+	Picture    string  `json:"picture"`
+	Desc       string  `json:"desc"`
+	CreateTime string  `json:"create_time"`
 }
