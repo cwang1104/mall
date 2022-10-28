@@ -6,14 +6,13 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"strings"
-	"time"
-
 	"github.com/zeromicro/go-zero/core/stores/builder"
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/sqlc"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"github.com/zeromicro/go-zero/core/stringx"
+	"strings"
+	"time"
 )
 
 var (
@@ -33,6 +32,8 @@ type (
 		FindOneByEmail(ctx context.Context, email string) (*User, error)
 		Update(ctx context.Context, data *User) error
 		Delete(ctx context.Context, id int64) error
+
+		FindAll(ctx context.Context, pageSize, offset int32) ([]*User, error)
 	}
 
 	defaultUserModel struct {
@@ -132,6 +133,19 @@ func (m *defaultUserModel) Update(ctx context.Context, newData *User) error {
 		return conn.ExecCtx(ctx, query, newData.Email, newData.Password, newData.Desc, newData.Status, newData.Id)
 	}, userEmailKey, userIdKey)
 	return err
+}
+
+func (m *defaultUserModel) FindAll(ctx context.Context, pageSize, offset int32) ([]*User, error) {
+	var users []*User
+	query := fmt.Sprintf("select * from %s limit %d offset %d order by id desc", m.table, pageSize, offset)
+	err := m.QueryRowsNoCacheCtx(ctx, &users, query)
+	if err != nil {
+		if err == ErrNotFound {
+			return nil, ErrNotFound
+		}
+		return nil, err
+	}
+	return users, nil
 }
 
 func (m *defaultUserModel) formatPrimary(primary interface{}) string {

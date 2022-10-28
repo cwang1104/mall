@@ -36,18 +36,27 @@ func (l *LoginHandleLogic) LoginHandle(req *types.LoginRequest) (resp *types.Log
 	if err != nil {
 		return nil, errors.Wrapf(err, "req:%+v", req)
 	}
+	var response types.LoginResponse
+	if res.Code == 200 {
+		//生成jwt token
+		now := time.Now().Unix()
+		accessExpire := l.svcCtx.Config.JwtAuth.AccessExpire
+		accessToken, err := jwtx.GetToken(l.svcCtx.Config.JwtAuth.AccessSecret, now, accessExpire, res.Email)
+		if err != nil {
+			logx.Errorf("get jwt token failed, error:%s", err.Error())
+			return nil, err
+		}
 
-	//生成jwt token
-	now := time.Now().Unix()
-	accessExpire := l.svcCtx.Config.JwtAuth.AccessExpire
-	accessToken, err := jwtx.GetToken(l.svcCtx.Config.JwtAuth.AccessSecret, now, accessExpire, res.Email)
-	if err != nil {
-		return nil, err
+		response.Msg = res.Msg
+		response.Code = res.Code
+		response.UserName = res.Email
+		response.Token = accessToken
+		response.AccessExpire = now + accessExpire
+		logx.Infof("user login success:%s", res.Email)
+	} else {
+		response.Msg = res.Msg
+		response.Code = res.Code
 	}
-	resp.Msg = res.Msg
-	resp.Code = res.Code
-	resp.UserName = res.Email
-	resp.Token = accessToken
-	resp.AccessExpire = now + accessExpire
-	return
+
+	return &response, nil
 }

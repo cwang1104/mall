@@ -36,3 +36,13 @@ func (s *UserServer) UserLogin(ctx context.Context, in *user.UserRequest) (*user
 	l := logic.NewUserLoginLogic(ctx, s.svcCtx)
 	return l.UserLogin(in)
 }
+
+func (s *UserServer) AdminLogin(ctx context.Context, in *user.AdminRequest) (*user.AdminResponse, error) {
+	l := logic.NewAdminLoginLogic(ctx, s.svcCtx)
+	return l.AdminLogin(in)
+}
+
+func (s *UserServer) GetUserList(ctx context.Context, in *user.GetUserRequest) (*user.GetUserResponse, error) {
+	l := logic.NewGetUserListLogic(ctx, s.svcCtx)
+	return l.GetUserList(in)
+}

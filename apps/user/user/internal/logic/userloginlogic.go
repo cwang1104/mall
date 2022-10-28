@@ -2,6 +2,8 @@ package logic
 
 import (
 	"context"
+	"mall/apps/user/model"
+	"mall/pkg/utils"
 
 	"mall/apps/user/user/internal/svc"
 	"mall/apps/user/user/user"
@@ -24,7 +26,29 @@ func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserLog
 }
 
 func (l *UserLoginLogic) UserLogin(in *user.UserRequest) (*user.UserResponse, error) {
-	// todo: add your logic here and delete this line
+	userInfo, err := l.svcCtx.UserModel.FindOneByEmail(l.ctx, in.Email)
+	if err != nil && err == model.ErrNotFound {
+		return &user.UserResponse{
+			Code: 500,
+			Msg:  "用户不存在",
+		}, nil
+	} else if err != nil && err != model.ErrNotFound {
+		return &user.UserResponse{
+			Code: 500,
+			Msg:  "查询错误",
+		}, nil
+	}
 
-	return &user.UserResponse{}, nil
+	err = utils.CheckPassword(in.Password, userInfo.Password)
+	if err != nil || in.Password != in.Repassword {
+		return &user.UserResponse{
+			Code: 500,
+			Msg:  "密码错误",
+		}, nil
+	}
+
+	return &user.UserResponse{
+		Code: 200,
+		Msg:  "登录成功",
+	}, nil
 }

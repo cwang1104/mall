@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"fmt"
 	"mall/apps/user/user/userclient"
 	"mall/pkg/utils"
 
@@ -41,7 +40,6 @@ func (l *SendEmailLogic) SendEmail(req *types.SendEmailRequest) (resp *types.Sen
 
 	res, err := l.svcCtx.UserRpc.UserSendEmail(l.ctx, &pbData)
 	if err != nil {
-		fmt.Println("------------", err)
 		return nil, err
 	}
 

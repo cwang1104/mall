@@ -43,7 +43,7 @@ func (l *RegisterHandleLogic) RegisterHandle(req *types.RegisterRequest) (resp *
 	}
 	pbData := user.UserRequest{
 		Email:      req.Email,
-		Code:       req.Catpche,
+		Code:       req.Captche,
 		Password:   req.Password,
 		Repassword: req.Repassword,
 	}

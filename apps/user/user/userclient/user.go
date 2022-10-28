@@ -13,6 +13,11 @@ import (
 )
 
 type (
+	AdminRequest    = user.AdminRequest
+	AdminResponse   = user.AdminResponse
+	GetUserRequest  = user.GetUserRequest
+	GetUserResponse = user.GetUserResponse
+	UserInfo        = user.UserInfo
 	UserMailRequest = user.UserMailRequest
 	UserRequest     = user.UserRequest
 	UserResponse    = user.UserResponse
@@ -21,6 +26,8 @@ type (
 		UserRegister(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
 		UserSendEmail(ctx context.Context, in *UserMailRequest, opts ...grpc.CallOption) (*UserResponse, error)
 		UserLogin(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
+		AdminLogin(ctx context.Context, in *AdminRequest, opts ...grpc.CallOption) (*AdminResponse, error)
+		GetUserList(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	}
 
 	defaultUser struct {
@@ -47,4 +54,14 @@ func (m *defaultUser) UserSendEmail(ctx context.Context, in *UserMailRequest, op
 func (m *defaultUser) UserLogin(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.UserLogin(ctx, in, opts...)
+}
+
+func (m *defaultUser) AdminLogin(ctx context.Context, in *AdminRequest, opts ...grpc.CallOption) (*AdminResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.AdminLogin(ctx, in, opts...)
+}
+
+func (m *defaultUser) GetUserList(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.GetUserList(ctx, in, opts...)
 }

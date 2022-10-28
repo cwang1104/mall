@@ -2,6 +2,9 @@ package user
 
 import (
 	"context"
+	"mall/apps/user/user/userclient"
+	"mall/pkg/jwtx"
+	"time"
 
 	"mall/apps/app/api/internal/svc"
 	"mall/apps/app/api/internal/types"
@@ -24,7 +27,29 @@ func NewAdminLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AdminL
 }
 
 func (l *AdminLoginLogic) AdminLogin(req *types.AdminLoginReq) (resp *types.AdminLoginResponse, err error) {
-	// todo: add your logic here and delete this line
-
-	return
+	data := userclient.AdminRequest{
+		UserName: req.UserName,
+		Password: req.Password,
+	}
+	res, err := l.svcCtx.UserRpc.AdminLogin(l.ctx, &data)
+	if err != nil {
+		logx.Errorf("userRpc error", err)
+		return nil, err
+	}
+	var response types.AdminLoginResponse
+	response.Code = res.Code
+	response.Msg = res.Msg
+	if res.Code == 200 {
+		now := time.Now().Unix()
+		accessExpire := l.svcCtx.Config.JwtAuth.AccessExpire
+		accessToken, err := jwtx.GetToken(l.svcCtx.Config.JwtAuth.AccessSecret, now, accessExpire, res.UserName)
+		if err != nil {
+			logx.Errorf("get jwt token failed, error:%s", err.Error())
+			return nil, err
+		}
+		response.AdminToken = accessToken
+		response.AccessExpire = accessExpire
+		response.UserName = res.UserName
+	}
+	return &response, nil
 }
