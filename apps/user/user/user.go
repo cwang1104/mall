@@ -23,7 +23,9 @@ func main() {
 	flag.Parse()
 
 	logx.DisableStat()
-
+	logx.MustSetup(logx.LogConf{
+		Encoding: "plain",
+	})
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 	ctx := svc.NewServiceContext(c)

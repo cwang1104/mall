@@ -4,7 +4,6 @@ import (
 	"context"
 	"mall/apps/user/user/userclient"
 
-	"github.com/jinzhu/copier"
 	"github.com/zeromicro/go-zero/core/logx"
 	"mall/apps/app/api/internal/svc"
 	"mall/apps/app/api/internal/types"
@@ -35,6 +34,22 @@ func (l *GetUserListLogic) GetUserList(req *types.GetUserListReq) (resp *types.G
 		logx.Errorf("getUserList userRpc failed", err)
 		return nil, err
 	}
-	_ = copier.Copy(&response, res)
+
+	var users []types.User
+	for _, v := range res.Users {
+		user := types.User{
+			Email:       v.Email,
+			Desc:        v.Desc,
+			Status:      v.Status,
+			CreatedTime: v.CreatedTime,
+		}
+		users = append(users, user)
+	}
+	response.Code = res.Code
+	response.Msg = res.Msg
+	response.FrontUsers = users
+	response.PageSize = res.PageSize
+	response.CurrentPage = res.Current
+	response.Total = res.Total
 	return &response, nil
 }

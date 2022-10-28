@@ -57,6 +57,14 @@ type GetUserListResponse struct {
 	Code        int32  `json:"code"`
 	Msg         string `json:"msg"`
 	Total       int32  `json:"total"`
+	FrontUsers  []User `json:"front_users"`
 	CurrentPage int32  `json:"current_page"`
 	PageSize    int32  `json:"page_size"`
+}
+
+type User struct {
+	Email       string `json:"email"`
+	Desc        string `json:"desc"`
+	Status      string `json:"status"`
+	CreatedTime string `json:"created_time"`
 }

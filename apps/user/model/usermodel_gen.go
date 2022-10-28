@@ -137,7 +137,7 @@ func (m *defaultUserModel) Update(ctx context.Context, newData *User) error {
 
 func (m *defaultUserModel) FindAll(ctx context.Context, pageSize, offset int32) ([]*User, error) {
 	var users []*User
-	query := fmt.Sprintf("select * from %s limit %d offset %d order by id desc", m.table, pageSize, offset)
+	query := fmt.Sprintf("select * from %s limit %d offset %d", m.table, pageSize, offset)
 	err := m.QueryRowsNoCacheCtx(ctx, &users, query)
 	if err != nil {
 		if err == ErrNotFound {
